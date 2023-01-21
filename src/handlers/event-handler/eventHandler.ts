@@ -24,7 +24,7 @@ async function runEachEvent (client: Client) {
     await getEvents()
         .then((events: Event[]) => {
             events.forEach((event) => {
-                client.on(`${event.trigger}`, (args: any) => event.run(args))
+                client.on(`${event.trigger}`, (args: any) => event.run(args, client))
             })
         });
 }
