@@ -12,6 +12,7 @@
   "devDependencies": {
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
+    "fast-glob": "^3.2.12",
     "ts-node": "^10.9.1"
   }
 }
