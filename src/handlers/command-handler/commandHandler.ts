@@ -15,7 +15,5 @@ export
         async function commandHandler (interaction: CommandInteraction, client: Client) {
             const cmdsArr = await getCommands();
 
-            console.log(cmdsArr)
-
             await runIfEvoked(cmdsArr, interaction, client);
         }
