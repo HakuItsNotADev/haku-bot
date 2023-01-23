@@ -13,7 +13,9 @@ async function runIfEvoked (cmdsArr: Command[], interaction: CommandInteraction,
 export 
     default 
         async function commandHandler (interaction: CommandInteraction, client: Client) {
-            const cmdsArr = await getCommands('src/handlers/command-handler/commands/**/**.ts');
+            const cmdsArr = await getCommands();
+
+            console.log(cmdsArr)
 
             await runIfEvoked(cmdsArr, interaction, client);
         }

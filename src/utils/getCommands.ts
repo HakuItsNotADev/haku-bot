@@ -3,18 +3,18 @@ import { Command } from '../types/Command';
 
 export
     default
-        async function getCommands (dir: string) {
-            var commandsPropsArr: Command[] = [];
-            
+        async function getEvents () {
+            const dir = 'src/handlers/command-handler/commands/**/**.ts';
+            let commandsPropsArr: Command[] = [];
+        
             await fG(dir)
-                .then((commands) => {
-                    commands.forEach(async (command) => {
-                        await import(`../../${command}`)
-                            .then((props: Command) => {
-                                commandsPropsArr.push(props);
-                            })
+                .then(async (commands) => {
+                    commands.forEach(async (cmd) => {
+                        const props = await import(`../../${cmd}`)
+        
+                        commandsPropsArr.push(props);
                     })
-                });
+                })
             
             return commandsPropsArr;
         }
