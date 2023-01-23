@@ -1,32 +1,29 @@
-import fG from 'fast-glob';
 import { Client } from 'discord.js';
-import { Event } from '../../types/Event';
+import fG from 'fast-glob';
+import { Event } from '../../types/Event'
 
-async function getEvents (): Promise<Event[]> {
-    var eventsPropsArr: Event[] = [];
+async function getEvents () {
+    const dir = 'src/handlers/event-handler/events/**/**.ts';
+    let eventsPropsArr: Event[] = [];
 
-    await fG('src/handlers/event-handler/events/**/**.ts')
-        .then((events) => {
-            console.log(events)
-
+    await fG(dir)
+        .then(async (events) => {
             events.forEach(async (event) => {
-                ;(await import(`../../../${event}`)
-                    .then((props: Event) => {
-                        eventsPropsArr.push(props);
-                    }))
-            }) 
-        });
+                const props = await import(`../../../${event}`)
 
+                eventsPropsArr.push(props);
+            })
+        })
+    
     return eventsPropsArr;
 }
 
 async function runEachEvent (client: Client) {
-    await getEvents()
-        .then((events: Event[]) => {
-            events.forEach((event) => {
-                client.on(`${event.trigger}`, (args: any) => event.run(args, client))
-            })
-        });
+    const events = await getEvents();
+
+    events.forEach((event) => {
+        client.on(`${event.trigger}`, (args: any) => event.run(args, client))
+    })
 }
 
 export

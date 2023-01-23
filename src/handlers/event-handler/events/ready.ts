@@ -5,7 +5,8 @@ import getCommands from '../../../utils/getCommands';
 function checkIfExistsInAppCommands (client: Client, cmd: Command) {
     const cmds = client.application?.commands;
 
-    const existsInCmds = cmds?.cache.some(cmdInCache => cmdInCache.name === cmd.name);
+    const existsInCmds = cmds?.cache
+        .some(cmdInCache => cmdInCache.name === cmd.name);
 
     if (existsInCmds) {
         return;
@@ -17,7 +18,7 @@ function checkIfExistsInAppCommands (client: Client, cmd: Command) {
                     description: cmd.description
                 }
             ).then(() => {
-                console.log('Added cmd:', cmd)
+                console.log('Added command:', cmd)
             });
     }
 }
@@ -26,11 +27,13 @@ module.exports = {
     trigger: 'ready',
     run: async (client: Client) => {
         const botUsername = client.user?.username;
-        const commands = await getCommands('src/handlers/command-handler/commands/**/**.ts');
 
-        commands.forEach(async (cmd: Command) => {
-            await checkIfExistsInAppCommands(client, cmd)
-        })
+        await getCommands()
+            .then((commands: Command[]) => {
+                commands.forEach(async (cmd: Command) => {
+                    await checkIfExistsInAppCommands(client, cmd)
+                })
+            })
 
         console.log(`Logged on ${botUsername}`);
     }
