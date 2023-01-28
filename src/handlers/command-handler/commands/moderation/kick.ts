@@ -65,8 +65,6 @@ module.exports = {
                 const reason = () => {
                     const input = interaction.options.get('reason');
 
-                    console.log(input)
-
                     if (!input) {
                         return `N/A`
                     }
